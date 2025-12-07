@@ -1,0 +1,17 @@
+# Python cache
+__pycache__/
+
+# Virtual environments
+venv/
+
+# Ignore OCR data contents but keep the folder
+ocr_data/*
+!ocr_data/.gitkeep
+
+# Data artifacts that may contain personal data
+chunks_meta.json
+chunks.txt
+embeddings.npy
+
+# ignore macOS things
+.DS_Store
