@@ -15,3 +15,6 @@ embeddings.npy
 
 # ignore macOS things
 .DS_Store
+
+# ignore evaluation json file to not reveal any personal information
+evaluation/eval_dataset.json

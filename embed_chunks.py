@@ -17,7 +17,7 @@ def load_chunks(chunks_path: Path) -> list[dict]:
     текст...
 
     ===== CHUNK 2 =====
-    текст...
+    текст...    
     """
     text = chunks_path.read_text(encoding="utf-8")
 
@@ -65,11 +65,12 @@ def main():
         raise ValueError("Файл chunks.txt не содержит чанков")
 
     # Берём модель для многоязычных предложений (включая русский)
-    model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    model_name = "intfloat/multilingual-e5-base"
     print(f"▶ Загружаю модель эмбеддингов: {model_name} ...")
     model = SentenceTransformer(model_name)
 
-    texts = [c["text"] for c in chunks]
+    # E5 ожидает префикс "passage: " для документов
+    texts = [f"passage: {c['text']}" for c in chunks]
 
     print("▶ Считаю эмбеддинги...")
     embeddings = model.encode(
@@ -77,7 +78,7 @@ def main():
         batch_size=16,
         show_progress_bar=True,
         convert_to_numpy=True,
-        normalize_embeddings=True,  # удобно для косинусного сходства
+        normalize_embeddings=True,  # удобно для cosine / IP
     )
 
     print("▶ Сохраняю эмбеддинги и метаданные...")

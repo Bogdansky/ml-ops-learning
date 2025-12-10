@@ -32,7 +32,7 @@ def load_meta(meta_path: Path) -> list[dict]:
 
 
 def build_model() -> SentenceTransformer:
-    model_name = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    model_name = "intfloat/multilingual-e5-base"
     print(f"▶ Загружаю модель эмбеддингов: {model_name}")
     model = SentenceTransformer(model_name)
     return model
@@ -65,10 +65,11 @@ def search_faiss(
     top_k: int = 3,
 ):
     # Считаем эмбеддинг запроса
+    e5_query = f"query: {query}"
     query_vec = model.encode(
-        [query],
+        [e5_query],
         convert_to_numpy=True,
-        normalize_embeddings=True,  # так же, как в embed_chunks.py
+        normalize_embeddings=True,
     )[0].astype(np.float32)
 
     # Приводим форму к (1, dim), как любит FAISS
